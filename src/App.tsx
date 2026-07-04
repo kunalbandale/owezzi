@@ -514,18 +514,18 @@ export default function App() {
       {/* Sidebar Tabbed Settings Panel (studywithme.io style) */}
       {showSettings && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-md p-4 animate-fade-in">
-          <div className="w-full max-w-2xl bg-[var(--bg)]/90 backdrop-blur-xl border border-[var(--muted)]/20 rounded-[28px] overflow-hidden flex h-[480px] shadow-2xl animate-modal-enter text-[var(--ink)]">
+          <div className="w-full max-w-2xl settings-modal rounded-[28px] overflow-hidden flex h-[480px] shadow-2xl animate-modal-enter border">
             {/* Sidebar (Left Pane) */}
-            <div className="w-1/3 border-r border-[var(--muted)]/15 p-6 flex flex-col gap-3 bg-[var(--surface)]/25 h-full">
-              <h3 className="text-xs uppercase tracking-[0.15em] font-bold text-[var(--muted)] mb-3 px-3">Preferences</h3>
+            <div className="w-1/3 p-6 flex flex-col gap-3 settings-sidebar h-full border-r">
+              <h3 className="text-xs uppercase tracking-[0.15em] font-bold settings-text-muted mb-3 px-3">Preferences</h3>
               {(['general', 'timers', 'sounds', 'stats'] as const).map((tab) => (
                 <button
                   key={tab}
                   onClick={() => setSettingsTab(tab)}
                   className={`w-full text-left py-2 px-3 rounded-lg text-sm font-semibold transition-all ${
                     settingsTab === tab
-                      ? 'bg-[var(--surface)]/50 text-[var(--ink)] font-bold pl-4 border-l-4 border-[var(--accent)] shadow-sm'
-                      : 'text-[var(--muted)] hover:text-[var(--ink)] pl-3'
+                      ? 'settings-tab-active shadow-sm font-bold pl-4'
+                      : 'settings-tab-inactive pl-3'
                   }`}
                 >
                   {tab === 'general' ? 'General' : tab === 'timers' ? 'Timers' : tab === 'sounds' ? 'Sounds' : 'Statistics'}
@@ -548,17 +548,17 @@ export default function App() {
             </div>
 
             {/* Content Viewport (Right Pane) */}
-            <div className="w-2/3 p-8 flex flex-col justify-between h-full bg-[var(--surface)]/5">
+            <div className="w-2/3 p-8 flex flex-col justify-between h-full settings-content">
               <div className="flex-1 overflow-y-auto pr-1">
                 {settingsTab === 'general' && (
                   <div className="flex flex-col gap-5">
                     <div>
-                      <h4 className="text-xs uppercase tracking-wider text-[var(--muted)] mb-2 font-bold">Aesthetic Theme</h4>
+                      <h4 className="text-xs uppercase tracking-wider settings-text-muted mb-2 font-bold">Aesthetic Theme</h4>
                       <div className="relative">
                         <select
                           value={theme}
                           onChange={(e) => setTheme(e.target.value as Theme)}
-                          className="w-full bg-[var(--surface)] text-[var(--ink)] border border-[var(--muted)]/25 rounded-xl px-4 py-3 outline-none focus:border-[var(--accent)] transition-colors text-sm font-semibold cursor-pointer appearance-none"
+                          className="w-full settings-input rounded-xl px-4 py-3 outline-none transition-colors text-sm font-semibold cursor-pointer appearance-none"
                         >
                           {(Object.keys(themeNames) as Theme[]).map((t) => (
                             <option key={t} value={t} className="bg-[var(--bg)] py-2 text-[var(--ink)]">
@@ -566,18 +566,18 @@ export default function App() {
                             </option>
                           ))}
                         </select>
-                        <span className="absolute right-4 top-3.5 text-[var(--muted)]/50 pointer-events-none text-xs">▼</span>
+                        <span className="absolute right-4 top-3.5 settings-text-muted/50 pointer-events-none text-xs">▼</span>
                       </div>
                     </div>
 
                     <div className="flex items-center justify-between py-2 border-t border-[var(--muted)]/10 mt-2">
                       <div className="flex flex-col">
                         <span className="text-sm font-semibold">Sound Notifications</span>
-                        <span className="text-[10px] text-[var(--muted)]">Ping browser alert when session completes</span>
+                        <span className="text-[10px] settings-text-muted">Ping browser alert when session completes</span>
                       </div>
                       <label className="relative inline-flex items-center cursor-pointer select-none">
                         <input type="checkbox" defaultChecked className="sr-only peer" />
-                        <div className="w-9 h-5 bg-[var(--surface)] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-[var(--ink)] after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-[var(--ink)] after:border-none after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[var(--accent)]"></div>
+                        <div className="w-9 h-5 settings-toggle-track peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-[var(--bg)] after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-none after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[var(--accent)]"></div>
                       </label>
                     </div>
                   </div>
@@ -585,48 +585,48 @@ export default function App() {
 
                 {settingsTab === 'timers' && (
                   <div className="flex flex-col gap-5">
-                    <h4 className="text-xs uppercase tracking-wider text-[var(--muted)] mb-1 font-bold">Set Session Durations</h4>
+                    <h4 className="text-xs uppercase tracking-wider settings-text-muted mb-1 font-bold">Set Session Durations</h4>
                     <div className="grid grid-cols-3 gap-3">
                       <div>
-                        <label className="text-[10px] text-[var(--muted)] mb-1.5 block font-semibold">Focus</label>
+                        <label className="text-[10px] settings-text-muted mb-1.5 block font-semibold">Focus</label>
                         <div className="relative flex items-center">
                           <input
                             type="number"
                             value={tempWork}
                             onChange={(e) => setTempWork(Math.max(1, parseInt(e.target.value) || 0))}
                             min={1}
-                            className="w-full text-center bg-[var(--surface)] text-[var(--ink)] border border-[var(--muted)]/25 rounded-xl py-2.5 outline-none focus:border-[var(--accent)] transition-colors text-sm font-bold"
+                            className="w-full text-center settings-input rounded-xl py-2.5 outline-none transition-colors text-sm font-bold"
                           />
                         </div>
-                        <span className="text-[9px] text-[var(--muted)] text-center block mt-1">minutes</span>
+                        <span className="text-[9px] settings-text-muted text-center block mt-1">minutes</span>
                       </div>
 
                       <div>
-                        <label className="text-[10px] text-[var(--muted)] mb-1.5 block font-semibold">Short Break</label>
+                        <label className="text-[10px] settings-text-muted mb-1.5 block font-semibold">Short Break</label>
                         <div className="relative flex items-center">
                           <input
                             type="number"
                             value={tempShort}
                             onChange={(e) => setTempShort(Math.max(1, parseInt(e.target.value) || 0))}
                             min={1}
-                            className="w-full text-center bg-[var(--surface)] text-[var(--ink)] border border-[var(--muted)]/25 rounded-xl py-2.5 outline-none focus:border-[var(--accent)] transition-colors text-sm font-bold"
+                            className="w-full text-center settings-input rounded-xl py-2.5 outline-none transition-colors text-sm font-bold"
                           />
                         </div>
-                        <span className="text-[9px] text-[var(--muted)] text-center block mt-1">minutes</span>
+                        <span className="text-[9px] settings-text-muted text-center block mt-1">minutes</span>
                       </div>
 
                       <div>
-                        <label className="text-[10px] text-[var(--muted)] mb-1.5 block font-semibold">Long Break</label>
+                        <label className="text-[10px] settings-text-muted mb-1.5 block font-semibold">Long Break</label>
                         <div className="relative flex items-center">
                           <input
                             type="number"
                             value={tempLong}
                             onChange={(e) => setTempLong(Math.max(1, parseInt(e.target.value) || 0))}
                             min={1}
-                            className="w-full text-center bg-[var(--surface)] text-[var(--ink)] border border-[var(--muted)]/25 rounded-xl py-2.5 outline-none focus:border-[var(--accent)] transition-colors text-sm font-bold"
+                            className="w-full text-center settings-input rounded-xl py-2.5 outline-none transition-colors text-sm font-bold"
                           />
                         </div>
-                        <span className="text-[9px] text-[var(--muted)] text-center block mt-1">minutes</span>
+                        <span className="text-[9px] settings-text-muted text-center block mt-1">minutes</span>
                       </div>
                     </div>
 
@@ -647,13 +647,13 @@ export default function App() {
                 {settingsTab === 'sounds' && (
                   <div className="flex flex-col gap-5">
                     <div>
-                      <h4 className="text-xs uppercase tracking-wider text-[var(--muted)] mb-2 font-bold">Mute Settings</h4>
+                      <h4 className="text-xs uppercase tracking-wider settings-text-muted mb-2 font-bold">Mute Settings</h4>
                       <button
                         onClick={() => setMuted((m) => !m)}
                         className={`w-full flex items-center justify-center gap-2 py-3 rounded-xl border text-sm font-semibold transition-all ${
                           muted
                             ? 'border-red-500/25 bg-red-500/10 text-red-400'
-                            : 'border-[var(--muted)]/20 bg-[var(--surface)] text-[var(--ink)] hover:opacity-90'
+                            : 'settings-button-secondary'
                         }`}
                       >
                         {muted ? 'Sound Muted' : 'Sound Enabled'}
@@ -662,7 +662,7 @@ export default function App() {
 
                     <div className="border-t border-[var(--muted)]/10 pt-4">
                       <div className="flex justify-between items-center mb-2">
-                        <h4 className="text-xs uppercase tracking-wider text-[var(--muted)] font-bold">Volume</h4>
+                        <h4 className="text-xs uppercase tracking-wider settings-text-muted font-bold">Volume</h4>
                         <span className="text-xs text-[var(--ink)]/80">80%</span>
                       </div>
                       <input
@@ -678,15 +678,15 @@ export default function App() {
 
                 {settingsTab === 'stats' && (
                   <div className="flex flex-col gap-5">
-                    <h4 className="text-xs uppercase tracking-wider text-[var(--muted)] font-bold">Study Record</h4>
+                    <h4 className="text-xs uppercase tracking-wider settings-text-muted font-bold">Study Record</h4>
                     <div className="grid grid-cols-2 gap-4">
-                      <div className="bg-[var(--surface)]/40 rounded-2xl p-4 border border-[var(--muted)]/10">
+                      <div className="rounded-2xl p-4 settings-card">
                         <div className="text-3xl font-extrabold text-[var(--ink)]">{state.completedSessions}</div>
-                        <div className="text-xs text-[var(--muted)] font-semibold mt-1">Sessions Completed</div>
+                        <div className="text-xs settings-text-muted font-semibold mt-1">Sessions Completed</div>
                       </div>
-                      <div className="bg-[var(--surface)]/40 rounded-2xl p-4 border border-[var(--muted)]/10">
+                      <div className="rounded-2xl p-4 settings-card">
                         <div className="text-3xl font-extrabold text-[var(--ink)]">{Math.floor(state.totalFocusTime / 60)}</div>
-                        <div className="text-xs text-[var(--muted)] font-semibold mt-1">Total Focus Minutes</div>
+                        <div className="text-xs settings-text-muted font-semibold mt-1">Total Focus Minutes</div>
                       </div>
                     </div>
 
@@ -696,7 +696,7 @@ export default function App() {
                         className={`w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold transition-all ${
                           copied
                             ? 'bg-green-500/20 text-green-400 border border-green-500/30'
-                            : 'bg-[var(--accent)] text-[var(--bg)] hover:opacity-90 font-bold shadow-lg'
+                            : 'settings-button-primary font-bold shadow-lg'
                         }`}
                       >
                         {copied ? (
@@ -720,13 +720,13 @@ export default function App() {
               <div className="flex justify-end gap-3 pt-4 border-t border-[var(--muted)]/15 mt-4">
                 <button
                   onClick={() => setShowSettings(false)}
-                  className="px-6 py-2.5 rounded-full bg-[var(--surface)] text-[var(--ink)] hover:opacity-90 transition-all text-sm font-semibold active:scale-95"
+                  className="px-6 py-2.5 rounded-full settings-button-secondary transition-all text-sm font-semibold active:scale-95"
                 >
                   Close
                 </button>
                 <button
                   onClick={saveSettingsChanges}
-                  className="px-6 py-2.5 rounded-full bg-[var(--accent)] text-[var(--bg)] hover:opacity-90 transition-all text-sm font-bold active:scale-95 shadow-md shadow-white/5"
+                  className="px-6 py-2.5 rounded-full settings-button-primary transition-all text-sm font-bold active:scale-95 shadow-md shadow-white/5"
                 >
                   Save changes
                 </button>
